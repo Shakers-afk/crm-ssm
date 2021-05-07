@@ -4,8 +4,11 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvn="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <!-- controller扫描器 -->
+
+<!-- controller扫描器 -->
     <context:component-scan base-package="com.shantouxzk.crm.settings.web.controller"/>
+    <!-- handler扫描器 -->
+    <context:component-scan base-package="com.shantouxzk.crm.settings.web.handler" />
 
 <!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
 <!--        <property name="prefix" value="/WEB-INF/jsp/"/>-->
@@ -17,5 +20,5 @@
         1.响应ajax，将对象转换为json
         2.解决静态资源访问问题
     -->
-    <mvn:annotation-driven/>
+    <mvn:annotation-driven />
 </beans>
