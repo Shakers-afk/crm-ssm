@@ -1,10 +1,9 @@
 package com.shantouxzk.crm.settings.web.controller;
 
 import com.shantouxzk.crm.settings.domain.User;
-import com.shantouxzk.crm.settings.exception.LoginException;
+import com.shantouxzk.crm.exception.LoginException;
 import com.shantouxzk.crm.settings.service.UserService;
 import com.shantouxzk.crm.utils.MD5Util;
-import com.shantouxzk.crm.utils.PrintJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/settings/user")
 public class UserController {
     @Autowired
     private UserService service;

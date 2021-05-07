@@ -1,6 +1,6 @@
-package com.shantouxzk.crm.settings.web.handler;
+package com.shantouxzk.crm.web.handler;
 
-import com.shantouxzk.crm.settings.exception.LoginException;
+import com.shantouxzk.crm.exception.LoginException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,16 +22,6 @@ public class LoginExceptionHandler{
         return map;
     }
 
-//    @ExceptionHandler(LoginException.class)
-//    public void doLoginException(HttpServletResponse response, Exception e){
-//        e.printStackTrace();
-//        Map<String,Object> map = new HashMap<>();
-//        String msg = e.getMessage();
-//        map.put("msg",msg);
-//        map.put("success",false);
-//
-//        PrintJson.printJsonObj(response,map);
-//    }
 
 //    @ExceptionHandler
 //    public void doDefaultException(Exception e){

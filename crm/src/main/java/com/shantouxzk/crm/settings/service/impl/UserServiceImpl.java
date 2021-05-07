@@ -2,7 +2,7 @@ package com.shantouxzk.crm.settings.service.impl;
 
 import com.shantouxzk.crm.settings.dao.UserDao;
 import com.shantouxzk.crm.settings.domain.User;
-import com.shantouxzk.crm.settings.exception.LoginException;
+import com.shantouxzk.crm.exception.LoginException;
 import com.shantouxzk.crm.settings.service.UserService;
 import com.shantouxzk.crm.utils.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;

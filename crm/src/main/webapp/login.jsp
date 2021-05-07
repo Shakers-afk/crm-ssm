@@ -26,7 +26,7 @@
 
             //为当前窗口设置键盘单击事件（按回车触发登陆按钮onclick）
             $(window).keydown(function (event){
-                if(event.keyCode==13){
+                if(event.keyCode===13){
                     $("#submitBtn").click();
                 }
             })
@@ -35,13 +35,13 @@
             var loginAct = $.trim($("#loginAct").val());//字符串去除空格
             var loginPwd = $.trim($("#loginPwd").val());
 
-            if (loginAct=="" || loginPwd==""){
+            if (loginAct==="" || loginPwd===""){
                 $("#msg").html("账号密码不能为空");
                 return false;
             }
 
             $.ajax({
-                url:"user/login.do",
+                url:"settings/user/login.do",
                 data:{
                     "loginAct":loginAct,
                     "loginPwd":loginPwd
@@ -52,7 +52,7 @@
                     //data:{"success":"false"/"true","msg":...}
                     if (data.success){
                         //登录成功，跳转页面
-                        window.location.href="workbench/index.html";
+                        window.location.href="workbench/index.jsp";
                     }else {
                         //登录失败，输入返回的提示信息
                         $("#msg").html(data.msg);
@@ -77,7 +77,7 @@
         <div class="page-header">
             <h1>登录</h1>
         </div>
-        <form action="workbench/index.html" class="form-horizontal" role="form">
+        <form action="workbench/index.jsp" class="form-horizontal" role="form">
             <div class="form-group form-group-lg">
                 <div style="width: 350px;">
                     <input id="loginAct" class="form-control" type="text" placeholder="用户名">

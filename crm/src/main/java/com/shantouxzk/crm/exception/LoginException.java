@@ -1,4 +1,4 @@
-package com.shantouxzk.crm.settings.exception;
+package com.shantouxzk.crm.exception;
 
 public class LoginException extends Exception{
     public LoginException() {
