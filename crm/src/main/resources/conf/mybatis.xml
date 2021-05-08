@@ -11,11 +11,13 @@
     <typeAliases>
         <!-- name:实体类所在包名 -->
         <package name="com.shantouxzk.crm.settings.domain"/>
+        <package name="com.shantouxzk.crm.workbench.domain"/>
     </typeAliases>
 
     <!-- sql mapper(sql映射文件)所在位置 -->
     <mappers>
         <!-- name:mapper文件所在包名 这个包所有mapper.xml文件都能一次加载 -->
         <package name="com.shantouxzk.crm.settings.dao"/>
+        <package name="com.shantouxzk.crm.workbench.dao"/>
     </mappers>
 </configuration>

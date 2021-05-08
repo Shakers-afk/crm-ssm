@@ -3,6 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--
+        add/create;
+        save;
+        edit;
+        update;
+        get;
+        特殊：login
+    -->
     <!-- 注册中央调度器 -->
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>

@@ -7,22 +7,12 @@
 
     <!-- controller扫描器 -->
     <context:component-scan base-package="com.shantouxzk.crm.settings.web.controller"/>
+    <context:component-scan base-package="com.shantouxzk.crm.workbench.web.controller"/>
     <!-- handler扫描器 -->
     <context:component-scan base-package="com.shantouxzk.crm.web.handler" />
-
-<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
-<!--        <property name="prefix" value="/WEB-INF/jsp/"/>-->
-<!--        <property name="suffix" value=".jsp"/>-->
-<!--    </bean>-->
 
     <!-- 声明springmvc注解驱动 -->
     <mvn:annotation-driven />
 
-    <!-- 注册拦截器，拦截所有controller，注：无法拦截jsp -->
-<!--    <mvn:interceptors>-->
-<!--        <mvn:interceptor>-->
-<!--            <mvn:mapping path="/**"/>-->
-<!--            <bean class="com.shantouxzk.crm.web.interceptor.LoginInterceptor"/>-->
-<!--        </mvn:interceptor>-->
-<!--    </mvn:interceptors>-->
+
 </beans>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
     <!-- 引入属性配置文件 -->
     <context:property-placeholder location="classpath:conf/jdbc.properties"/>
 
@@ -22,9 +22,12 @@
     <!-- 动态代理对象（创建dao实例对象） -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.shantouxzk.crm.settings.dao"/>
+        <property name="basePackage" value="com.shantouxzk.crm.settings.dao,com.shantouxzk.crm.workbench.dao"/>
     </bean>
 
     <!-- 注册组件service扫描器（生成service接口实例对象） -->
     <context:component-scan base-package="com.shantouxzk.crm.settings.service"/>
+    <context:component-scan base-package="com.shantouxzk.crm.workbench.service"/>
+
+
 </beans>

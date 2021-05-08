@@ -22,9 +22,11 @@ public class LoginExceptionHandler{
         return map;
     }
 
-
-//    @ExceptionHandler
-//    public void doDefaultException(Exception e){
-//        e.printStackTrace();
-//    }
+    @ExceptionHandler
+    @ResponseBody
+    public Map<String,Object> doDefaultException(Exception e){
+        Map<String,Object> map = new HashMap<>();
+        map.put("success",false);
+        return map;
+    }
 }

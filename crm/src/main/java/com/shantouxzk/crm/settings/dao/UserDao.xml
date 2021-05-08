@@ -10,4 +10,12 @@
         from
              tbl_user where loginAct = #{arg0} and loginPwd = #{arg1};
     </select>
+
+    <select id="getUserList" resultType="User">
+        select
+            id,loginAct,name,loginPwd,email,expireTime,lockState,deptno,
+            allowIps,createTime,createBy,editTime,editBy
+        from
+            tbl_user
+    </select>
 </mapper>

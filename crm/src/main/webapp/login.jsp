@@ -13,6 +13,11 @@
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function (){
+            //如果当前窗口不是顶层窗口，则将其设置为顶层窗口
+            if(window.top!=window){
+                window.top.location=window.location;
+            }
+
             //页面加载完毕清空用户名框的内容
             $("#loginAct").val("");
 
@@ -36,7 +41,7 @@
             var loginPwd = $.trim($("#loginPwd").val());
 
             if (loginAct==="" || loginPwd===""){
-                $("#msg").html("账号密码不能为空");
+                $("#msg").html("账号和密码不能为空");
                 return false;
             }
 
