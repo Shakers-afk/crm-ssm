@@ -7,18 +7,28 @@
 <html>
 <head>
     <base href="<%=basePath%>">
-    <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet"/>
+    <link type="text/css" href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link type="text/css" href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css"
+          rel="stylesheet"/>
+    <link type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css" rel="stylesheet">
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript"
+            src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
+    <script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
+
     <script type="text/javascript">
         $(function () {
+            //页面加载完毕，执行页面分页查询
+            pageList(1, 2);
+
+            //获取使用者信息，添加时间组件，弹出添加模态窗口
             $("#addBtn").click(function () {
                 $(".time").datetimepicker({
                     minView: "month",
-                    language:  'zh-CN',
+                    language: 'zh-CN',
                     format: 'yyyy-mm-dd',
                     autoclose: true,
                     todayBtn: true,
@@ -32,9 +42,9 @@
                     success: function (data) {
                         var html = "<option></option>";
                         $.each(data, function (i, n) {
-                            html += "<option value='" + n.id + "'>"
-                            html += n.name
-                            html += "</option>"
+                            html += "<option value='" + n.id + "'>";
+                            html += n.name;
+                            html += "</option>";
                         })
                         $("#create-owner").html(html);
 
@@ -43,43 +53,168 @@
                         $("#create-owner").val(id);
                         //show：打开模态窗口；hide：关闭模态窗口
                         $("#createActivityModal").modal("show");
+
                     }
                 })
             })
 
-            $("#saveBtn").click(function (){
+            //添加市场活动，并返回结果
+            $("#saveBtn").click(function () {
                 $.ajax({
-                    url:"workbench/activity/save.do",
+                    url: "workbench/activity/save.do",
                     method: "post",
-                    dataType:"json",
-                    data:{
-                        "owner":$.trim($("#create-owner").val()),
-                        "name":$.trim($("#create-name").val()),
-                        "startDate":$.trim($("#create-startDate").val()),
-                        "endDate":$.trim($("#create-endDate").val()),
-                        "cost":$.trim($("#create-cost").val()),
-                        "description":$.trim($("#create-description").val())
+                    dataType: "json",
+                    data: {
+                        "owner": $.trim($("#create-owner").val()),
+                        "name": $.trim($("#create-name").val()),
+                        "startDate": $.trim($("#create-startDate").val()),
+                        "endDate": $.trim($("#create-endDate").val()),
+                        "cost": $.trim($("#create-cost").val()),
+                        "description": $.trim($("#create-description").val())
                     },
-                    success:function (data){
+                    success: function (data) {
                         //data:{success:true/false}
-                        if (data.success){
+                        if (data.success) {
                             $("#activityAddForm")[0].reset();
 
                             //添加成功后，刷新市场活动列表（局部刷新）
-
+                            pageList(1, 2);
                             //关闭添加市场活动窗口
                             $("#createActivityModal").modal("hide");
-                        }else {
+                        } else {
                             alert("添加市场活动失败！");
                         }
                     }
                 })
             })
+
+            //查找市场活动
+            $("#searchBtn").click(function () {
+                $("#hidden-name").val($.trim($("#search-name").val()));
+                $("#hidden-owner").val($.trim($("#search-owner").val()));
+                $("#hidden-startDate").val($.trim($("#search-startDate").val()));
+                $("#hidden-endDate").val($.trim($("#search-endDate").val()));
+                pageList(1, 2);
+            })
+
+            //为复选框绑定单击事件：单选框全选/不全选
+            $("#chkAllBox").click(function () {
+                $("input[name=chkBox]").prop("checked", this.checked);
+            })
+
+            //单选框 name=chkBox 多选框 id=chkAllBox
+            //对于动态生成的页面元素要使用回调函数绑定
+            $("#activityBody").on("click", $("input[name=chkBox]"), function () {
+                $("#chkAllBox").prop("checked", $("input[name=chkBox]").length == $("input[name=chkBox]:checked").length);
+            })
+
+            //批量删除市场活动
+            $("#deleteBtn").click(function () {
+                var $chkBox = $("input[name=chkBox]:checked");
+
+                if ($chkBox.length==0){
+                    alert("请选择删除选项");
+                    return;
+                }
+
+                if(confirm("确定删除所选记录吗？")){
+                    var parm = "";
+                    for (var i = 0; i < $chkBox.length; i++) {
+                        var id = $($chkBox[i]).val();
+                        parm += ("id=" + id);
+                        if (i < $chkBox.length - 1) {
+                            parm += "&";
+                        }
+                    }
+
+                    $.ajax({
+                        url:"workbench/activity/delete.do",
+                        method:"post",
+                        data:parm,
+                        dataType:"json",
+                        success:function (data){
+                            if (data.success){
+                                alert("删除成功！");
+                                pageList(1,2);
+                            }else {
+                                alert("删除市场活动异常！！");
+                            }
+                        }
+                    })
+                }
+
+            })
         });
 
+        function pageList(pageNo, pageSize) {
+            //每次刷新时将全选框取消选择
+            $("#chkAllBox").prop("checked",false);
+
+            //参数设置为上次点击查询时的参数
+            $("#search-name").val($("#hidden-name").val());
+            $("#search-owner").val($("#hidden-owner").val());
+            $("#search-startDate").val($("#hidden-startDate").val());
+            $("#search-endDate").val($("#hidden-endDate").val());
+
+            $.ajax({
+                url: "workbench/activity/pageList.do",
+                method: "get",
+                dataType: "json",
+                data: {
+                    "pageNo": pageNo,
+                    "pageSize": pageSize,
+                    "owner": $.trim($("#search-owner").val()),
+                    "name": $.trim($("#search-name").val()),
+                    "startDate": $.trim($("#search-startDate").val()),
+                    "endDate": $.trim($("#search-endDate").val()),
+                },
+                success: function (data) {
+                    //data:{"total":10,"dataList":{"owner":....}}
+                    var html = "";
+                    $.each(data.dataList, function (i, n) {
+                        html += '<tr class="active">';
+                        html += '"<td><input type="checkbox" name="chkBox" value="' + n.id + '"/></td>';
+                        html += '"<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">' + n.name + '</a></td>';
+                        html += '"<td>' + n.owner + '</td>';
+                        html += '"<td>' + n.startDate + '</td>';
+                        html += '"<td>' + n.endDate + '</td>';
+                        html += '"</tr>';
+                    })
+
+                    $("#activityBody").html(html);
+
+                    var totalPages = data.total % pageSize == 0 ? data.total / pageSize : parseInt(data.total / pageSize) + 1
+
+                    $("#activityPage").bs_pagination({
+                        currentPage: pageNo, // 页码
+                        rowsPerPage: pageSize, // 每页显示的记录条数
+                        maxRowsPerPage: 20, // 每页最多显示的记录条数
+                        totalPages: totalPages, // 总页数
+                        totalRows: data.total, // 总记录条数
+
+                        visiblePageLinks: 3, // 显示几个卡片
+
+                        showGoToPage: true,
+                        showRowsPerPage: true,
+                        showRowsInfo: true,
+                        showRowsDefaultInfo: true,
+
+                        onChangePage: function (event, data) {
+                            pageList(data.currentPage, data.rowsPerPage);
+                        }
+                    });
+
+                }
+            })
+        }
     </script>
 </head>
 <body>
+<!-- 隐藏域 -->
+<input id="hidden-name" type="hidden"/>
+<input id="hidden-owner" type="hidden"/>
+<input id="hidden-startDate" type="hidden"/>
+<input id="hidden-endDate" type="hidden"/>
 
 <!-- 创建市场活动的模态窗口 -->
 <div class="modal fade" id="createActivityModal" role="dialog">
@@ -228,14 +363,14 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">名称</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" id="search-name">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">所有者</div>
-                        <input class="form-control" type="text">
+                        <input class="form-control" type="text" id="search-owner">
                     </div>
                 </div>
 
@@ -243,17 +378,17 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control" type="text" id="startTime"/>
+                        <input class="form-control" type="text" id="search-startDate"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control" type="text" id="endTime">
+                        <input class="form-control" type="text" id="search-endDate">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-default">查询</button>
+                <button type="button" class="btn btn-default" id="searchBtn">查询</button>
 
             </form>
         </div>
@@ -266,7 +401,9 @@
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span
                         class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
-                <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+                <button type="button" class="btn btn-danger" id="deleteBtn"><span
+                        class="glyphicon glyphicon-minus"></span> 删除
+                </button>
             </div>
 
         </div>
@@ -274,69 +411,29 @@
             <table class="table table-hover">
                 <thead>
                 <tr style="color: #B3B3B3;">
-                    <td><input type="checkbox"/></td>
+                    <td><input id="chkAllBox" type="checkbox"/></td>
                     <td>名称</td>
                     <td>所有者</td>
                     <td>开始日期</td>
                     <td>结束日期</td>
                 </tr>
                 </thead>
-                <tbody>
-                <tr class="active">
-                    <td><input type="checkbox"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a>
-                    </td>
-                    <td>zhangsan</td>
-                    <td>2020-10-10</td>
-                    <td>2020-10-20</td>
-                </tr>
-                <tr class="active">
-                    <td><input type="checkbox"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a>
-                    </td>
-                    <td>zhangsan</td>
-                    <td>2020-10-10</td>
-                    <td>2020-10-20</td>
-                </tr>
+                <tbody id="activityBody">
+                <%--                <tr class="active">--%>
+                <%--                    <td><input type="checkbox"/></td>--%>
+                <%--                    <td><a style="text-decoration: none; cursor: pointer;"--%>
+                <%--                           onclick="window.location.href='workbench/activity/detail.jsp';">发传单</a>--%>
+                <%--                    </td>--%>
+                <%--                    <td>zhangsan</td>--%>
+                <%--                    <td>2020-10-10</td>--%>
+                <%--                    <td>2020-10-20</td>--%>
+                <%--                </tr>--%>
                 </tbody>
             </table>
         </div>
 
         <div style="height: 50px; position: relative;top: 30px;">
-            <div>
-                <button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
-            </div>
-            <div class="btn-group" style="position: relative;top: -34px; left: 110px;">
-                <button type="button" class="btn btn-default" style="cursor: default;">显示</button>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        10
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">20</a></li>
-                        <li><a href="#">30</a></li>
-                    </ul>
-                </div>
-                <button type="button" class="btn btn-default" style="cursor: default;">条/页</button>
-            </div>
-            <div style="position: relative;top: -88px; left: 285px;">
-                <nav>
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#">首页</a></li>
-                        <li class="disabled"><a href="#">上一页</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">下一页</a></li>
-                        <li class="disabled"><a href="#">末页</a></li>
-                    </ul>
-                </nav>
-            </div>
+            <div id="activityPage"></div>
         </div>
 
     </div>

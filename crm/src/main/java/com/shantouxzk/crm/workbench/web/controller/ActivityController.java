@@ -4,7 +4,8 @@ import com.shantouxzk.crm.settings.domain.User;
 import com.shantouxzk.crm.settings.service.UserService;
 import com.shantouxzk.crm.utils.DateTimeUtil;
 import com.shantouxzk.crm.utils.UUIDUtil;
-import com.shantouxzk.crm.workbench.dao.ActivityDao;
+import com.shantouxzk.crm.vo.PaginationVo;
+import com.shantouxzk.crm.workbench.dao.ActivityRemarkDao;
 import com.shantouxzk.crm.workbench.domain.Activity;
 import com.shantouxzk.crm.workbench.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,25 @@ public class ActivityController {
         activity.setCreateBy(createBy);
         activity.setCreateTime(createTime);
 
-        Boolean flag = activityService.save(activity);
+        Boolean flag = activityService.saveActivity(activity);
+        map.put("success",flag);
+        return map;
+    }
+
+    @RequestMapping("/pageList.do")
+    @ResponseBody
+    public PaginationVo<Activity> doPageList(Integer pageNo,Integer pageSize,Activity activity){
+        PaginationVo<Activity> vo = activityService.pageList(pageNo,pageSize,activity);
+        return vo;
+    }
+
+    @RequestMapping("/delete.do")
+    @ResponseBody
+    public Map<String,Object> doDelete(String[] id){
+        Map<String,Object> map = new HashMap<>();
+//        String[] idArr = id.split("&");
+
+        boolean flag = activityService.removeActivities(id);
         map.put("success",flag);
         return map;
     }

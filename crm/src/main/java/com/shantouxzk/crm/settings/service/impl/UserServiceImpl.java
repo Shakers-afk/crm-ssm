@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
-        User user = dao.login(loginAct, loginPwd);
+        User user = dao.selectUser(loginAct, loginPwd);
         if (user == null) {
             throw new LoginException("账号不存在或密码错误");
         }
@@ -45,6 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUserList() {
-        return dao.getUserList();
+        return dao.selectUsers();
     }
 }

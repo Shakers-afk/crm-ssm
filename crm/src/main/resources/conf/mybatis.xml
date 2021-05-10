@@ -14,6 +14,9 @@
         <package name="com.shantouxzk.crm.workbench.domain"/>
     </typeAliases>
 
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor" />
+    </plugins>
     <!-- sql mapper(sql映射文件)所在位置 -->
     <mappers>
         <!-- name:mapper文件所在包名 这个包所有mapper.xml文件都能一次加载 -->

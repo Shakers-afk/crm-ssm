@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class LoginExceptionHandler{
+public class MyExceptionHandler {
     @ExceptionHandler(LoginException.class)
     @ResponseBody
     public Map<String,Object> doLoginException(Exception e){
@@ -25,6 +25,7 @@ public class LoginExceptionHandler{
     @ExceptionHandler
     @ResponseBody
     public Map<String,Object> doDefaultException(Exception e){
+        e.printStackTrace();
         Map<String,Object> map = new HashMap<>();
         map.put("success",false);
         return map;
