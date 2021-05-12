@@ -2,6 +2,8 @@ package com.shantouxzk.crm.workbench.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.shantouxzk.crm.settings.dao.UserDao;
+import com.shantouxzk.crm.settings.domain.User;
 import com.shantouxzk.crm.vo.PaginationVo;
 import com.shantouxzk.crm.workbench.dao.ActivityDao;
 import com.shantouxzk.crm.workbench.dao.ActivityRemarkDao;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -20,19 +24,37 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityDao activityDao;
     @Autowired
     private ActivityRemarkDao activityRemarkDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
-    public Boolean saveActivity(Activity activity){
-        activityDao.insertActivity(activity);
+    public Boolean save(Activity activity){
+        activityDao.save(activity);
         return true;
     }
 
     @Transactional
     @Override
-    public Boolean removeActivities(String[] idArr) {
+    public Boolean delete(String[] idArr) {
         //删除市场活动相关备注
-        activityRemarkDao.deleteActivityRemarksByAids(idArr);
-        activityDao.deleteActivitiesByIds(idArr);
+        activityRemarkDao.deleteByAids(idArr);
+        activityDao.delete(idArr);
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndActivity(String id) {
+        Map<String,Object> map = new HashMap<>();
+        Activity activity = activityDao.getById(id);
+        List<User> userList = userDao.getUserList();
+        map.put("userList",userList);
+        map.put("activity",activity);
+        return map;
+    }
+
+    @Override
+    public Boolean update(Activity activity) {
+        activityDao.update(activity);
         return true;
     }
 
@@ -41,10 +63,10 @@ public class ActivityServiceImpl implements ActivityService {
         PaginationVo<Activity> vo = new PaginationVo<>();
 
         PageHelper.startPage(pageNo,pageSize);
-        List<Activity> dataList = activityDao.selectActivitiesByCondition(activity);
+        List<Activity> dataList = activityDao.getActivityListByCondition(activity);
         PageInfo<Activity> info = new PageInfo<>(dataList);
 
-        Integer total = (int) info.getTotal();
+        int total = (int) info.getTotal();
         vo.setTotal(total);
         vo.setDataList(dataList);
         return vo;

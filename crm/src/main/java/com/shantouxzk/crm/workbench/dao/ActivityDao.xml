@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shantouxzk.crm.workbench.dao.ActivityDao">
-    <insert id="insertActivity">
+    <insert id="save">
         insert into tbl_activity(id, owner, name, startDate, endDate, cost, description, createTime, createBy)
         values (#{id}, #{owner}, #{name}, #{startDate}, #{endDate}, #{cost}, #{description}, #{createTime}, #{createBy})
     </insert>
 
-    <select id="selectActivitiesByCondition" resultType="Activity">
+    <select id="getActivityListByCondition" resultType="Activity">
         select
         a.id,a.name,u.name as owner,a.startDate,a.endDate
         from
@@ -30,10 +30,29 @@
         order by a.createTime desc
     </select>
 
-    <delete id="deleteActivitiesByIds">
+    <delete id="delete">
         delete from tbl_activity where id in
         <foreach collection="array" item="aid" open="(" close=")" separator=",">
             #{aid}
         </foreach>
     </delete>
+
+    <select id="getById" resultType="Activity">
+        select id, name, owner, startDate, endDate, cost, description
+        from tbl_activity
+        where id = #{id}
+    </select>
+
+    <update id="update">
+        update tbl_activity
+        set owner=#{owner},
+            name=#{name},
+            startDate=#{startDate},
+            endDate=#{endDate},
+            cost=#{cost},
+            description=#{description},
+            editTime=#{editTime},
+            editBy=#{editBy}
+        where id = #{id}
+    </update>
 </mapper>

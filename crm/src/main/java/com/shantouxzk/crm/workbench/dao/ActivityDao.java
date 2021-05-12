@@ -5,7 +5,10 @@ import com.shantouxzk.crm.workbench.domain.Activity;
 import java.util.List;
 
 public interface ActivityDao {
-    int insertActivity(Activity activity);
-    int deleteActivitiesByIds(String[] idArr);
-    List<Activity> selectActivitiesByCondition(Activity activity);
+    void save(Activity activity);
+    void delete(String[] idArr);
+    void update(Activity activity);
+    Activity getById(String id);
+    List<Activity> getActivityListByCondition(Activity activity);
+
 }

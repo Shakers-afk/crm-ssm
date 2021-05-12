@@ -75,10 +75,10 @@
                     success: function (data) {
                         //data:{success:true/false}
                         if (data.success) {
-                            $("#activityAddForm")[0].reset();
-
                             //添加成功后，刷新市场活动列表（局部刷新）
-                            pageList(1, 2);
+                            pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+                            $("#activityAddForm")[0].reset();
                             //关闭添加市场活动窗口
                             $("#createActivityModal").modal("hide");
                         } else {
@@ -135,7 +135,8 @@
                         success:function (data){
                             if (data.success){
                                 alert("删除成功！");
-                                pageList(1,2);
+                                pageList(1,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
                             }else {
                                 alert("删除市场活动异常！！");
                             }
@@ -143,6 +144,89 @@
                     })
                 }
 
+            })
+
+            //弹出修改市场活动模态窗口
+            $("#editBtn").click(function (){
+                $(".time").datetimepicker({
+                    minView: "month",
+                    language: 'zh-CN',
+                    format: 'yyyy-mm-dd',
+                    autoclose: true,
+                    todayBtn: true,
+                    pickerPosition: "bottom-left"
+                });
+
+                var $chkBox = $("input[name=chkBox]:checked");
+                if ($chkBox.length==0){
+                    alert("请选择修改项");
+                }else if($chkBox.length>1){
+                    alert("请选择一个修改项");
+                }else {
+                    var id = $chkBox.val();
+
+                    $.ajax({
+                        url:"workbench/activity/getUserListAndActivity.do",
+                        method:"post",
+                        data:{
+                            "id":id
+                        },
+                        dataType:"json",
+                        success:function (data){
+                            //data:{"users":[{},{}..],"activity":{}}
+                            var html = "<option></option>";
+                            $.each(data.userList, function (i, n) {
+                                html += "<option value='" + n.id + "'>";
+                                html += n.name;
+                                html += "</option>";
+                            })
+                            $("#edit-owner").html(html);
+
+                            $("#edit-id").val(data.activity.id);
+                            $("#edit-name").val(data.activity.name);
+                            $("#edit-owner").val(data.activity.owner);
+                            $("#edit-startDate").val(data.activity.startDate);
+                            $("#edit-endDate").val(data.activity.endDate);
+                            $("#edit-cost").val(data.activity.cost);
+                            $("#edit-description").val(data.activity.description);
+
+                            $("#editActivityModal").modal("show");
+                        }
+                    })
+                }
+            })
+
+            //修改市场活动
+            $("#updateBtn").click(function (){
+                $.ajax({
+                    url: "workbench/activity/update.do",
+                    method: "post",
+                    dataType: "json",
+                    data: {
+                        "id":$.trim($("#edit-id").val()),
+                        "owner": $.trim($("#edit-owner").val()),
+                        "name": $.trim($("#edit-name").val()),
+                        "startDate": $.trim($("#edit-startDate").val()),
+                        "endDate": $.trim($("#edit-endDate").val()),
+                        "cost": $.trim($("#edit-cost").val()),
+                        "description": $.trim($("#edit-description").val())
+                    },
+                    success: function (data) {
+                        //data:{success:true/false}
+                        if (data.success) {
+                            //修改成功后，刷新市场活动列表（局部刷新）
+                            //第一个参数，维持当前页；
+                            //第二个参数，维持当前个数
+                            pageList($("#activityPage").bs_pagination('getOption', 'currentPage')
+                                ,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+
+                            //关闭添加市场活动窗口
+                            $("#editActivityModal").modal("hide");
+                        } else {
+                            alert("修改市场活动失败！");
+                        }
+                    }
+                })
             })
         });
 
@@ -211,6 +295,7 @@
 </head>
 <body>
 <!-- 隐藏域 -->
+<input id="edit-id" type="hidden">
 <input id="hidden-name" type="hidden"/>
 <input id="hidden-owner" type="hidden"/>
 <input id="hidden-startDate" type="hidden"/>
@@ -297,41 +382,39 @@
                         <label for="edit-marketActivityOwner" class="col-sm-2 control-label">所有者<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <select class="form-control" id="edit-marketActivityOwner">
-                                <option>zhangsan</option>
-                                <option>lisi</option>
-                                <option>wangwu</option>
+                            <select class="form-control" id="edit-owner">
+
                             </select>
                         </div>
                         <label for="edit-marketActivityName" class="col-sm-2 control-label">名称<span
                                 style="font-size: 15px; color: red;">*</span></label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-marketActivityName" value="发传单">
+                            <input type="text" class="form-control" id="edit-name">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-startTime" value="2020-10-10">
+                            <input type="text" class="form-control time" id="edit-startDate" readonly>
                         </div>
                         <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-endTime" value="2020-10-20">
+                            <input type="text" class="form-control time" id="edit-endDate" readonly>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-cost" class="col-sm-2 control-label">成本</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-cost" value="5,000">
+                            <input type="text" class="form-control" id="edit-cost">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="edit-describe" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-10" style="width: 81%;">
-                            <textarea class="form-control" rows="3" id="edit-describe">市场活动Marketing，是指品牌主办或参与的展览会议与公关市场活动，包括自行主办的各类研讨会、客户交流会、演示会、新产品发布会、体验会、答谢会、年会和出席参加并布展或演讲的展览会、研讨会、行业交流会、颁奖典礼等</textarea>
+                            <textarea class="form-control" rows="3" id="edit-description"></textarea>
                         </div>
                     </div>
 
@@ -340,7 +423,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">更新</button>
+                <button type="button" class="btn btn-primary" id="updateBtn">更新</button>
             </div>
         </div>
     </div>
@@ -398,7 +481,7 @@
                 <button type="button" class="btn btn-primary" id="addBtn">
                     <span class="glyphicon glyphicon-plus"></span> 创建
                 </button>
-                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span
+                <button type="button" class="btn btn-default" id="editBtn"><span
                         class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
                 <button type="button" class="btn btn-danger" id="deleteBtn"><span

@@ -6,10 +6,12 @@ import com.shantouxzk.crm.workbench.domain.Activity;
 import java.util.Map;
 
 public interface ActivityService {
-    Boolean saveActivity(Activity activity);
-    Boolean removeActivities(String[] idArr);
-
+    Boolean save(Activity activity);
+    Boolean delete(String[] idArr);
+    Boolean update(Activity activity);
     PaginationVo<Activity> pageList(Integer pageNo,Integer pageSize,Activity activity);
+
+    Map<String,Object> getUserListAndActivity(String id);
 
 
 }
