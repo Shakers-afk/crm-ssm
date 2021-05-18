@@ -8,6 +8,26 @@
         values (#{id}, #{owner}, #{name}, #{startDate}, #{endDate}, #{cost}, #{description}, #{createTime}, #{createBy})
     </insert>
 
+    <delete id="delete">
+        delete from tbl_activity where id in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        update tbl_activity
+        set owner=#{owner},
+            name=#{name},
+            startDate=#{startDate},
+            endDate=#{endDate},
+            cost=#{cost},
+            description=#{description},
+            editTime=#{editTime},
+            editBy=#{editBy}
+        where id = #{id}
+    </update>
+
     <select id="getActivityListByCondition" resultType="Activity">
         select
         a.id,a.name,u.name as owner,a.startDate,a.endDate
@@ -30,29 +50,53 @@
         order by a.createTime desc
     </select>
 
-    <delete id="delete">
-        delete from tbl_activity where id in
-        <foreach collection="array" item="aid" open="(" close=")" separator=",">
-            #{aid}
-        </foreach>
-    </delete>
-
     <select id="getById" resultType="Activity">
         select id, name, owner, startDate, endDate, cost, description
         from tbl_activity
         where id = #{id}
     </select>
 
-    <update id="update">
-        update tbl_activity
-        set owner=#{owner},
-            name=#{name},
-            startDate=#{startDate},
-            endDate=#{endDate},
-            cost=#{cost},
-            description=#{description},
-            editTime=#{editTime},
-            editBy=#{editBy}
-        where id = #{id}
-    </update>
+    <select id="detail" resultType="Activity">
+        select a.id,
+               a.name,
+               u.name as owner,
+               a.startDate,
+               a.endDate,
+               a.cost,
+               a.description,
+               a.createTime,
+               a.createBy,
+               a.editBy,
+               a.editTime
+        from tbl_activity a
+                 join tbl_user u on a.owner = u.id
+        where a.id = #{id}
+    </select>
+
+    <select id="getActivityListByClueId" resultType="Activity">
+        select r.id,
+               a.name,
+               u.name as owner,
+               a.startDate,
+               a.endDate
+        from tbl_activity a
+                 join tbl_user u on a.owner = u.id
+                 join tbl_clue_activity_relation r on r.activityId = a.id
+        where r.clueId = #{clueId}
+    </select>
+
+    <select id="getActivityListByNameAndNotByClueId" resultType="Activity">
+        select a.id,
+               a.name,
+               u.name as owner,
+               a.startDate,
+               a.endDate
+        from tbl_activity a
+                 join tbl_user u on a.owner = u.id
+        where a.name like '%' #{activityName} '%' and
+              a.id not in(
+                select activityId from tbl_clue_activity_relation where clueId = #{clueId}
+            )
+        order by a.name
+    </select>
 </mapper>

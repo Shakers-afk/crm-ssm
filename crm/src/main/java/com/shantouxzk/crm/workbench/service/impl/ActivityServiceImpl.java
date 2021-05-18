@@ -8,6 +8,7 @@ import com.shantouxzk.crm.vo.PaginationVo;
 import com.shantouxzk.crm.workbench.dao.ActivityDao;
 import com.shantouxzk.crm.workbench.dao.ActivityRemarkDao;
 import com.shantouxzk.crm.workbench.domain.Activity;
+import com.shantouxzk.crm.workbench.domain.ActivityRemark;
 import com.shantouxzk.crm.workbench.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,21 @@ import java.util.Map;
 
 @Service
 public class ActivityServiceImpl implements ActivityService {
-    @Autowired
+    private UserDao userDao;
     private ActivityDao activityDao;
-    @Autowired
     private ActivityRemarkDao activityRemarkDao;
     @Autowired
-    private UserDao userDao;
+    public void setActivityDao(ActivityDao activityDao) {
+        this.activityDao = activityDao;
+    }
+    @Autowired
+    public void setActivityRemarkDao(ActivityRemarkDao activityRemarkDao) {
+        this.activityRemarkDao = activityRemarkDao;
+    }
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public Boolean save(Activity activity){
@@ -43,6 +53,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public Boolean update(Activity activity) {
+        activityDao.update(activity);
+        return true;
+    }
+
+    @Override
     public Map<String, Object> getUserListAndActivity(String id) {
         Map<String,Object> map = new HashMap<>();
         Activity activity = activityDao.getById(id);
@@ -53,9 +69,13 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Boolean update(Activity activity) {
-        activityDao.update(activity);
-        return true;
+    public Activity detail(String id) {
+        return activityDao.detail(id);
+    }
+
+    @Override
+    public List<ActivityRemark> getRemarkListByAid(String activityId) {
+        return activityRemarkDao.getRemarkListByAid(activityId);
     }
 
     @Override
@@ -70,6 +90,34 @@ public class ActivityServiceImpl implements ActivityService {
         vo.setTotal(total);
         vo.setDataList(dataList);
         return vo;
+    }
+
+    @Override
+    public Boolean deleteRemark(String id) {
+        activityRemarkDao.deleteById(id);
+        return true;
+    }
+
+    @Override
+    public Boolean saveRemark(ActivityRemark activityRemark) {
+        activityRemarkDao.saveRemark(activityRemark);
+        return true;
+    }
+
+    @Override
+    public Boolean updateRemark(ActivityRemark activityRemark) {
+        activityRemarkDao.updateRemark(activityRemark);
+        return true;
+    }
+
+    @Override
+    public List<Activity> getActivityListByClueId(String clueId) {
+        return activityDao.getActivityListByClueId(clueId);
+    }
+
+    @Override
+    public List<Activity> getActivityListByNameAndNotByClueId(Map<String, String> map) {
+        return activityDao.getActivityListByNameAndNotByClueId(map);
     }
 
 

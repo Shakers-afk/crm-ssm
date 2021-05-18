@@ -18,8 +18,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/settings/user")
 public class UserController {
-    @Autowired
     private UserService service;
+
+    @Autowired
+    public void setService(UserService service) {
+        this.service = service;
+    }
 
     @RequestMapping(value = "/login.do",method = RequestMethod.POST,produces = "application/json")
     @ResponseBody

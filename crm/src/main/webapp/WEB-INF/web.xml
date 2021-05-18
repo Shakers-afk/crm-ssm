@@ -57,7 +57,7 @@
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
 
-    <!-- jsp过滤器 -->
+    <!-- 登录过滤器 -->
     <filter>
         <filter-name>loginFilter</filter-name>
         <filter-class>com.shantouxzk.crm.web.filter.LoginFilter</filter-class>
@@ -67,4 +67,9 @@
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
+
+    <!-- 监听器：系统启动时加载数据字典 -->
+    <listener>
+        <listener-class>com.shantouxzk.crm.web.listener.SysInitListener</listener-class>
+    </listener>
 </web-app>

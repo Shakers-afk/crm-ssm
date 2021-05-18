@@ -5,6 +5,7 @@ import com.shantouxzk.crm.settings.domain.User;
 import com.shantouxzk.crm.exception.LoginException;
 import com.shantouxzk.crm.settings.service.UserService;
 import com.shantouxzk.crm.utils.DateTimeUtil;
+import com.shantouxzk.crm.workbench.domain.Clue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,12 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
     private UserDao dao;
+
+    @Autowired
+    public void setDao(UserDao dao) {
+        this.dao = dao;
+    }
 
     @Override
     public User login(String loginAct, String loginPwd, String ip) throws LoginException {
@@ -47,4 +52,6 @@ public class UserServiceImpl implements UserService {
     public List<User> getUserList() {
         return dao.getUserList();
     }
+
+
 }

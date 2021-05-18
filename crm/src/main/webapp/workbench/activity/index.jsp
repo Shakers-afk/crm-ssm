@@ -24,17 +24,17 @@
             //页面加载完毕，执行页面分页查询
             pageList(1, 2);
 
+            $(".time").datetimepicker({
+                minView: "month",
+                language: 'zh-CN',
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayBtn: true,
+                pickerPosition: "bottom-left"
+            });
+
             //获取使用者信息，添加时间组件，弹出添加模态窗口
             $("#addBtn").click(function () {
-                $(".time").datetimepicker({
-                    minView: "month",
-                    language: 'zh-CN',
-                    format: 'yyyy-mm-dd',
-                    autoclose: true,
-                    todayBtn: true,
-                    pickerPosition: "bottom-left"
-                });
-
                 $.ajax({
                     url: "workbench/activity/getUserList.do",
                     method: "get",
@@ -258,7 +258,7 @@
                     $.each(data.dataList, function (i, n) {
                         html += '<tr class="active">';
                         html += '"<td><input type="checkbox" name="chkBox" value="' + n.id + '"/></td>';
-                        html += '"<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.jsp\';">' + n.name + '</a></td>';
+                        html += '"<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+n.id+'\';">' + n.name + '</a></td>';
                         html += '"<td>' + n.owner + '</td>';
                         html += '"<td>' + n.startDate + '</td>';
                         html += '"<td>' + n.endDate + '</td>';
