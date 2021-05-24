@@ -4,10 +4,11 @@
             request.getServerName() + ":" + request.getServerPort() +
             request.getContextPath() + "/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<%=basePath%>">
-
+    <meta charset="UTF-8">
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
     <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
@@ -113,12 +114,6 @@
                         }
                     })
                 }
-
-                $.ajax({
-                    url: "",
-                    method: "post",
-                    data: {}
-                })
             })
 
             showActivityList();
@@ -401,7 +396,7 @@
         <h3>${clue.fullname}${clue.appellation} <small>${clue.company}</small></h3>
     </div>
     <div style="position: relative; height: 50px; width: 500px;  top: -72px; left: 700px;">
-        <button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp';"><span
+        <button type="button" class="btn btn-default" onclick="window.location.href='workbench/clue/convert.jsp?id=${clue.id}&fullname=${clue.fullname}&appellation=${clue.appellation}&company=${clue.company}&owner=${clue.owner}';"><span
                 class="glyphicon glyphicon-retweet"></span> 转换
         </button>
         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span

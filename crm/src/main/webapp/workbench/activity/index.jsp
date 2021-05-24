@@ -4,9 +4,11 @@
             request.getServerName() + ":" + request.getServerPort() +
             request.getContextPath() + "/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<%=basePath%>">
+    <meta charset="UTF-8">
     <link type="text/css" href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link type="text/css" href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css"
           rel="stylesheet"/>

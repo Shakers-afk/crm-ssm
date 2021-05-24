@@ -28,6 +28,29 @@
         where id = #{id}
     </update>
 
+    <select id="detail" resultType="Activity">
+        select a.id,
+               a.name,
+               u.name as owner,
+               a.startDate,
+               a.endDate,
+               a.cost,
+               a.description,
+               a.createTime,
+               a.createBy,
+               a.editBy,
+               a.editTime
+        from tbl_activity a
+                 join tbl_user u on a.owner = u.id
+        where a.id = #{id}
+    </select>
+
+    <select id="getById" resultType="Activity">
+        select id, name, owner, startDate, endDate, cost, description
+        from tbl_activity
+        where id = #{id}
+    </select>
+
     <select id="getActivityListByCondition" resultType="Activity">
         select
         a.id,a.name,u.name as owner,a.startDate,a.endDate
@@ -48,29 +71,6 @@
             </if>
         </where>
         order by a.createTime desc
-    </select>
-
-    <select id="getById" resultType="Activity">
-        select id, name, owner, startDate, endDate, cost, description
-        from tbl_activity
-        where id = #{id}
-    </select>
-
-    <select id="detail" resultType="Activity">
-        select a.id,
-               a.name,
-               u.name as owner,
-               a.startDate,
-               a.endDate,
-               a.cost,
-               a.description,
-               a.createTime,
-               a.createBy,
-               a.editBy,
-               a.editTime
-        from tbl_activity a
-                 join tbl_user u on a.owner = u.id
-        where a.id = #{id}
     </select>
 
     <select id="getActivityListByClueId" resultType="Activity">
@@ -98,5 +98,17 @@
                 select activityId from tbl_clue_activity_relation where clueId = #{clueId}
             )
         order by a.name
+    </select>
+
+    <select id="getActivityListByName" resultType="Activity">
+        select a.id,
+               a.name,
+               u.name as owner,
+               a.startDate,
+               a.endDate
+        from tbl_activity a
+                 join tbl_user u on a.owner = u.id
+        where a.name like '%' #{activityName} '%'
+        order by a.name;
     </select>
 </mapper>

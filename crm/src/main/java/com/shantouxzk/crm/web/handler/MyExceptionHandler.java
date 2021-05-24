@@ -13,7 +13,6 @@ public class MyExceptionHandler {
     @ExceptionHandler(LoginException.class)
     @ResponseBody
     public Map<String,Object> doLoginException(Exception e){
-//        e.printStackTrace();
         Map<String,Object> map = new HashMap<>();
         String msg = e.getMessage();
         map.put("msg",msg);

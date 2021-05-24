@@ -1,5 +1,7 @@
 package com.shantouxzk.crm.workbench.dao;
 
-public interface CustomerRemarkDao {
+import com.shantouxzk.crm.workbench.domain.CustomerRemark;
 
+public interface CustomerRemarkDao {
+    int save(CustomerRemark customerRemark);
 }

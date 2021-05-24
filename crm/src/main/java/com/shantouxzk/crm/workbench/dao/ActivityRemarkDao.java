@@ -1,19 +1,20 @@
 package com.shantouxzk.crm.workbench.dao;
 
-import com.shantouxzk.crm.workbench.domain.Activity;
 import com.shantouxzk.crm.workbench.domain.ActivityRemark;
 
 import java.util.List;
 
 public interface ActivityRemarkDao {
-    int deleteByAids(String[] aidArr);
+    int deleteByAids(String[] aids);
+
+    int getCountByAids(String[] aids);
 
     List<ActivityRemark> getRemarkListByAid(String activityId);
 
-    void deleteById(String id);
+    int deleteById(String id);
 
-    void saveRemark(ActivityRemark activityRemark);
+    int saveRemark(ActivityRemark activityRemark);
 
-    void updateRemark(ActivityRemark activityRemark);
+    int updateRemark(ActivityRemark activityRemark);
 
 }

@@ -1,13 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String basePath = request.getScheme() + "://" +
             request.getServerName() + ":" + request.getServerPort() +
             request.getContextPath() + "/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<%=basePath%>">
-
+    <meta charset="UTF-8">
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
     <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css"
           rel="stylesheet"/>
@@ -134,7 +136,7 @@
         <div class="btn-toolbar" role="toolbar"
              style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
             <div class="btn-group" style="position: relative; top: 18%;">
-                <button type="button" class="btn btn-primary" onclick="window.location.href='workbench/transaction/save.jsp';"><span
+                <button type="button" class="btn btn-primary" onclick="window.location.href='workbench/transaction/add.do';"><span
                         class="glyphicon glyphicon-plus"></span> 创建
                 </button>
                 <button type="button" class="btn btn-default" onclick="window.location.href='edit.html';"><span
@@ -163,7 +165,7 @@
                 <tr>
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='workbench/transaction/detail.jsp';">动力节点-交易01</a></td>
+                           onclick="window.location.href='workbench/transaction/detail.do?id=cfc30c17627842b0aae2a17099150c0c';">交易1</a></td>
                     <td>动力节点</td>
                     <td>谈判/复审</td>
                     <td>新业务</td>
@@ -174,7 +176,7 @@
                 <tr class="active">
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='detail.jsp';">动力节点-交易01</a></td>
+                           onclick="window.location.href='workbench/transaction/detail.do?id=39b1c26e2a294a18a4d7753b6f2e1021';">交易2</a></td>
                     <td>动力节点</td>
                     <td>谈判/复审</td>
                     <td>新业务</td>

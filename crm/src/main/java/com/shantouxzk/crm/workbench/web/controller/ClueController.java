@@ -6,6 +6,7 @@ import com.shantouxzk.crm.utils.DateTimeUtil;
 import com.shantouxzk.crm.utils.UUIDUtil;
 import com.shantouxzk.crm.workbench.domain.Activity;
 import com.shantouxzk.crm.workbench.domain.Clue;
+import com.shantouxzk.crm.workbench.domain.Tran;
 import com.shantouxzk.crm.workbench.service.ActivityService;
 import com.shantouxzk.crm.workbench.service.ClueService;
 import org.apache.ibatis.annotations.Param;
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Shakers
+ */
 @Controller
 @RequestMapping("/workbench/clue")
 public class ClueController {
@@ -60,19 +66,21 @@ public class ClueController {
         return activityService.getActivityListByNameAndNotByClueId(map);
     }
 
+    @RequestMapping("/getActivityListByName")
+    @ResponseBody
+    public List<Activity> doGetActivityListByName(String activityName){
+        return activityService.getActivityListByName(activityName);
+    }
+
     @RequestMapping("/save.do")
     @ResponseBody
     public Map<String,Object> doSave(Clue clue, HttpServletRequest request){
         Map<String,Object> map = new HashMap<>();
-        String id = UUIDUtil.getUUID();
-        String createTime = DateTimeUtil.getSysTime();
-        String createBy = ((User)request.getSession().getAttribute("user")).getName();
-
-        clue.setId(id);
-        clue.setCreateBy(createBy);
-        clue.setCreateTime(createTime);
-        Boolean flag = clueService.save(clue);
-        map.put("success",flag);
+        clue.setId(UUIDUtil.getUUID());
+        clue.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        clue.setCreateTime(DateTimeUtil.getSysTime());
+        Boolean success = clueService.save(clue);
+        map.put("success",success);
         return map;
     }
 
@@ -89,8 +97,8 @@ public class ClueController {
     @ResponseBody
     public Map<String,Object> doBund(String clueId,@Param("activityId") String[] activityId){
         Map<String,Object> map = new HashMap<>();
-        Boolean flag = clueService.bund(clueId,activityId);
-        map.put("success",flag);
+        Boolean success = clueService.bund(clueId,activityId);
+        map.put("success",success);
         return map;
     }
 
@@ -98,8 +106,32 @@ public class ClueController {
     @ResponseBody
     public Map<String,Object> doUnbund(String id){
         Map<String,Object> map = new HashMap<>();
-        Boolean flag = clueService.unbund(id);
-        map.put("success",flag);
+        Boolean success = clueService.unbund(id);
+        map.put("success",success);
         return map;
     }
+
+    @RequestMapping("convert.do")
+    public ModelAndView doConvert(String clueId, Boolean flag, Tran tran, HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        String createBy = ((User)request.getSession().getAttribute("user")).getName();
+        if (flag!=null && flag){
+            tran.setId(UUIDUtil.getUUID());
+            tran.setCreateTime(DateTimeUtil.getSysTime());
+            tran.setCreateBy(createBy);
+        }
+
+        Boolean success = clueService.convert(clueId,tran,createBy);
+        if (success){
+            mv.setViewName("redirect:/workbench/clue/index.jsp");
+        }
+
+        return mv;
+    }
+
+//    @RequestMapping("/pageList.do")
+//    @ResponseBody
+//    public List<Clue> doPageList(Integer pageNo, Integer pageSize,Clue clue){
+//        return clueService.pageList(pageNo,pageSize,clue);
+//    }
 }

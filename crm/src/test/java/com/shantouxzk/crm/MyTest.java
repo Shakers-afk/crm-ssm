@@ -4,6 +4,7 @@ import com.shantouxzk.crm.settings.domain.DicValue;
 import com.shantouxzk.crm.settings.service.impl.DicServiceImpl;
 import com.shantouxzk.crm.utils.DateTimeUtil;
 import org.junit.Test;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,17 @@ public class MyTest {
 
     @Test
     public void test02(){
-        Map<String, List<DicValue>> map = (new DicServiceImpl()).getAll();
+        Boolean flag = true;
+        if (flag!=null&&flag){
+            System.out.println("flag:"+flag);
+        }
+    }
 
+    @Test
+    public void test03(){
+        boolean flag;
+
+        flag = false && false;
+        System.out.println(flag);
     }
 }

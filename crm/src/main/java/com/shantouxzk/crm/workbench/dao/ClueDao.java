@@ -1,14 +1,18 @@
 package com.shantouxzk.crm.workbench.dao;
 
+import com.shantouxzk.crm.workbench.domain.Activity;
 import com.shantouxzk.crm.workbench.domain.Clue;
-import com.shantouxzk.crm.workbench.domain.ClueActivityRelation;
+
+import java.util.List;
 
 public interface ClueDao {
-    void save(Clue clue);
+    int save(Clue clue);
 
     Clue detail(String id);
 
-    void unbund(String id);
+    Clue getById(String clueId);
 
-    void bund(ClueActivityRelation car);
+    int delete(String clueId);
+
+//    List<Clue> getClueListByCondition(Clue clue);
 }

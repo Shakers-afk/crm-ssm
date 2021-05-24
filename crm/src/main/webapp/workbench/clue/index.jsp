@@ -5,10 +5,11 @@
             request.getServerName() + ":" + request.getServerPort() +
             request.getContextPath() + "/";
 %>
+<!DOCTYPE html>
 <html>
 <head>
     <base href="<%=basePath%>">
-
+    <meta charset="UTF-8">
     <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
     <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css"
           rel="stylesheet"/>
@@ -89,6 +90,7 @@
                 })
             })
         });
+
 
     </script>
 </head>
@@ -523,21 +525,32 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input type="checkbox"/></td>
-                    <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='workbench/clue/detail.do?id=04b87d2abdd74473be9e9d2772358f73';">马云先生</a></td>
-                    <td>动力节点</td>
-                    <td>010-84846003</td>
-                    <td>12345678901</td>
-                    <td>广告</td>
-                    <td>zhangsan</td>
-                    <td>已联系</td>
-                </tr>
+<%--                <tr>--%>
+<%--                    <td><input type="checkbox"/></td>--%>
+<%--                    <td><a style="text-decoration: none; cursor: pointer;"--%>
+<%--                           onclick="window.location.href='workbench/clue/detail.do?id=04b87d2abdd74473be9e9d2772358f73';">马云先生</a></td>--%>
+<%--                    <td>动力节点</td>--%>
+<%--                    <td>010-84846003</td>--%>
+<%--                    <td>12345678901</td>--%>
+<%--                    <td>广告</td>--%>
+<%--                    <td>zhangsan</td>--%>
+<%--                    <td>已联系</td>--%>
+<%--                </tr>--%>
+<%--                <tr class="active">--%>
+<%--                    <td><input type="checkbox"/></td>--%>
+<%--                    <td><a style="text-decoration: none; cursor: pointer;"--%>
+<%--                           onclick="window.location.href='workbench/clue/detail.do?id=5d87c97188d148cdbe7da1a00f58bca0';">马化腾夫人</a></td>--%>
+<%--                    <td>动力节点</td>--%>
+<%--                    <td>010-84846003</td>--%>
+<%--                    <td>12345678901</td>--%>
+<%--                    <td>广告</td>--%>
+<%--                    <td>zhangsan</td>--%>
+<%--                    <td>已联系</td>--%>
+<%--                </tr>--%>
                 <tr class="active">
                     <td><input type="checkbox"/></td>
                     <td><a style="text-decoration: none; cursor: pointer;"
-                           onclick="window.location.href='workbench/clue/detail.do?id=5d87c97188d148cdbe7da1a00f58bca0';">马化腾夫人</a></td>
+                           onclick="window.location.href='workbench/clue/detail.do?id=7dd3d69c017e4eea83ee3fadda6cb248';">王健林先生</a></td>
                     <td>动力节点</td>
                     <td>010-84846003</td>
                     <td>12345678901</td>

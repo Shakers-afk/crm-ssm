@@ -55,16 +55,13 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doSave(HttpServletRequest request, Activity activity){
         Map<String,Object> map = new HashMap<>();
-        String id = UUIDUtil.getUUID();
-        String createTime = DateTimeUtil.getSysTime();
-        String createBy = ((User)request.getSession().getAttribute("user")).getName();
 
-        activity.setId(id);
-        activity.setCreateBy(createBy);
-        activity.setCreateTime(createTime);
+        activity.setId(UUIDUtil.getUUID());
+        activity.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        activity.setCreateTime(DateTimeUtil.getSysTime());
 
-        Boolean flag = activityService.save(activity);
-        map.put("success",flag);
+        Boolean success = activityService.save(activity);
+        map.put("success",success);
         return map;
     }
 
@@ -72,8 +69,8 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doDelete(String[] id){
         Map<String,Object> map = new HashMap<>();
-        boolean flag = activityService.delete(id);
-        map.put("success",flag);
+        boolean success = activityService.delete(id);
+        map.put("success",success);
         return map;
     }
 
@@ -81,14 +78,12 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doUpdate(HttpServletRequest request, Activity activity){
         Map<String,Object> map = new HashMap<>();
-        String editTime = DateTimeUtil.getSysTime();
-        String editBy = ((User)request.getSession().getAttribute("user")).getName();
 
-        activity.setEditTime(editTime);
-        activity.setEditBy(editBy);
+        activity.setEditTime(DateTimeUtil.getSysTime());
+        activity.setEditBy(((User)request.getSession().getAttribute("user")).getName());
 
-        Boolean flag = activityService.update(activity);
-        map.put("success",flag);
+        Boolean success = activityService.update(activity);
+        map.put("success",success);
         return map;
     }
 
@@ -96,8 +91,8 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doDeleteRemark(String id){
         Map<String,Object> map = new HashMap<>();
-        Boolean flag = activityService.deleteRemark(id);
-        map.put("success",flag);
+        Boolean success = activityService.deleteRemark(id);
+        map.put("success",success);
         return map;
     }
 
@@ -105,17 +100,13 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doSaveRemark(HttpServletRequest request, ActivityRemark activityRemark){
         Map<String,Object> map = new HashMap<>();
-        String id = UUIDUtil.getUUID();
-        String createTime = DateTimeUtil.getSysTime();
-        String createBy = ((User)request.getSession().getAttribute("user")).getName();
-        String editFlag = "0";
 
-        activityRemark.setId(id);
-        activityRemark.setCreateBy(createBy);
-        activityRemark.setCreateTime(createTime);
-        activityRemark.setEditFlag(editFlag);
-        Boolean flag = activityService.saveRemark(activityRemark);
-        map.put("success",flag);
+        activityRemark.setId(UUIDUtil.getUUID());
+        activityRemark.setCreateBy(((User)request.getSession().getAttribute("user")).getName());
+        activityRemark.setCreateTime(DateTimeUtil.getSysTime());
+        activityRemark.setEditFlag("0");
+        Boolean success = activityService.saveRemark(activityRemark);
+        map.put("success",success);
         map.put("activityRemark",activityRemark);
         return map;
     }
@@ -124,14 +115,11 @@ public class ActivityController {
     @ResponseBody
     public Map<String,Object> doUpdateRemark(HttpServletRequest request, ActivityRemark activityRemark){
         Map<String,Object> map = new HashMap<>();
-        String editTime = DateTimeUtil.getSysTime();
-        String editBy = ((User)request.getSession().getAttribute("user")).getName();
-        String editFlag = "1";
-        activityRemark.setEditBy(editBy);
-        activityRemark.setEditTime(editTime);
-        activityRemark.setEditFlag(editFlag);
-        Boolean flag = activityService.updateRemark(activityRemark);
-        map.put("success",flag);
+        activityRemark.setEditBy(((User)request.getSession().getAttribute("user")).getName());
+        activityRemark.setEditTime(DateTimeUtil.getSysTime());
+        activityRemark.setEditFlag("1");
+        Boolean success = activityService.updateRemark(activityRemark);
+        map.put("success",success);
         map.put("activityRemark",activityRemark);
         return map;
     }
